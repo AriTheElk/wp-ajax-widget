@@ -75,7 +75,7 @@ class wp_ajax_widget extends WP_Widget {
 		if (isset($instance['title']) && !is_null($instance['title']))
 			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']).PHP_EOL;
 		if (isset($instance['url']) && !is_null($instance['url'])) {
-			$script = sprintf('jQuery(".wp_ajax_widget").load("%s");', $instance['url']).PHP_EOL;
+			$script = sprintf('jQuery.get("%s/wp-ajax-widget/ajax-request.php?request=%s", function(data){jQuery(".wp_ajax_widget").append(data);});', plugins_url(), $instance['url']).PHP_EOL;
 			echo '<script type="text/javascript">'.PHP_EOL;
 			echo sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
 			echo '</script>'.PHP_EOL;
