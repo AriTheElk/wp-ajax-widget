@@ -9,7 +9,27 @@ Author URI: http://igaret.com/
 License: GPL2
 */
 
+/*  Copyright 2013  iGARET  (email : garetmckinley@me.com)
 
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+
+/**
+ * The main plugin class
+ * @author Garet McKinley <garetmckinley@me.com>
+ */
 class wp_ajax_widget extends WP_Widget {
 
 	# class constructor
@@ -51,17 +71,25 @@ class wp_ajax_widget extends WP_Widget {
 
 	# display the widget
 	function widget($args, $instance) {
+		wp_enqueue_script('jquery');
 		if (isset($instance['title']) && !is_null($instance['title']))
 			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']);
 		if (isset($instance['url']) && !is_null($instance['url'])) {
-			echo $instance['url'];
+			echo sprintf('<script type="text/javascript">jQuery(document).ready(function() {
+  alert("ASDF");
+});</script>');
 		}
+	}
+
+	# register/enqueue the required scripts
+	function register_scripts() {
+		wp_enqueue_script('jquery');
 	}
 }
 
 # register the widget
 add_action('widgets_init', create_function('', 'return register_widget("wp_ajax_widget");'));
-
+add_action('init', array("wp_ajax_widget", "register_scripts"));
 
 
 /**
