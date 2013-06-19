@@ -3,7 +3,7 @@
 Plugin Name: WP Ajax Widget
 Plugin URI: https://github.com/iGARET/wp-ajax-widget
 Description: A simple plugin that adds a simple widget
-Version: 1.0
+Version: 1.1
 Author: iGARET
 Author URI: http://igaret.com/
 License: GPL2
