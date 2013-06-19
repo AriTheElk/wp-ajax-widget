@@ -73,11 +73,14 @@ class wp_ajax_widget extends WP_Widget {
 	function widget($args, $instance) {
 		wp_enqueue_script('jquery');
 		if (isset($instance['title']) && !is_null($instance['title']))
-			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']);
+			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']).PHP_EOL;
 		if (isset($instance['url']) && !is_null($instance['url'])) {
-			echo sprintf('<script type="text/javascript">jQuery(document).ready(function() {
-  alert("ASDF");
-});</script>');
+			$script = sprintf('jQuery(".wp_ajax_widget").load("%s");', $instance['url']).PHP_EOL;
+			echo '<script type="text/javascript">'.PHP_EOL;
+			echo sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
+			echo '</script>'.PHP_EOL;
+
+			echo '<div class="wp_ajax_widget"></div>'.PHP_EOL;
 		}
 	}
 
