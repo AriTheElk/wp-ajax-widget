@@ -77,7 +77,7 @@ class wp_ajax_widget extends WP_Widget {
 		if (!empty($instance['title']))
 			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']).PHP_EOL;
 		if (!empty($instance['url'])) {
-			$script = sprintf('jQuery.get("%s?request=%s", function(data){jQuery(".wp_ajax_widget_return").append(data).fadeIn();jQuery(".wp_ajax_widget_loading").fadeOut();});', plugins_url( 'ajax-request.php' , __FILE__ ), $instance['url']).PHP_EOL;
+			$script = sprintf('jQuery.get("%s?request=%s", function(data){jQuery(".wp_ajax_widget_return").append(data).fadeIn();jQuery(".wp_ajax_widget_loading").fadeOut();});', plugins_url( 'ajax-request.php' , __FILE__ ), str_replace("http://", "", $instance['url'])).PHP_EOL;
 			echo '<script type="text/javascript">'.PHP_EOL;
 			echo sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
 			echo '</script>'.PHP_EOL;
