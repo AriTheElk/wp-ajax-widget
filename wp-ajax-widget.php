@@ -3,7 +3,7 @@
 Plugin Name: WP AJAX Widget
 Plugin URI: https://github.com/iGARET/wp-ajax-widget
 Description: Plugin for loading remote content into a widget.
-Version: 1.1.7
+Version: 1.1.8
 Author: iGARET
 Author URI: http://igaret.com
 License: GPL2
