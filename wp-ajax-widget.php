@@ -3,7 +3,7 @@
 Plugin Name: WP AJAX Widget
 Plugin URI: https://github.com/iGARET/wp-ajax-widget
 Description: Plugin for loading remote content into a widget.
-Version: 1.1.5
+Version: 1.1.6
 Author: iGARET
 Author URI: http://igaret.com
 License: GPL2
@@ -76,7 +76,7 @@ class wp_ajax_widget extends WP_Widget {
 		echo $before_widget;
 		if (!empty($instance['title']))
 			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']).PHP_EOL;
-		if (!empty($instance['title'])) {
+		if (!empty($instance['url'])) {
 			$script = sprintf('jQuery.get("%s?request=%s", function(data){jQuery(".wp_ajax_widget_return").append(data).fadeIn();jQuery(".wp_ajax_widget_loading").fadeOut();});', plugins_url( 'ajax-request.php' , __FILE__ ), $instance['url']).PHP_EOL;
 			echo '<script type="text/javascript">'.PHP_EOL;
 			echo sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
