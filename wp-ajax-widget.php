@@ -71,22 +71,25 @@ class wp_ajax_widget extends WP_Widget {
 
 	# display the widget
 	function widget($args, $instance) {
+		extract($args);
 		wp_enqueue_script('jquery');
+		echo $before_widget;
 		if (isset($instance['title']) && !is_null($instance['title']))
 			echo sprintf('<h3 class="widget-title">%s</h3>', $instance['title']).PHP_EOL;
 		if (isset($instance['url']) && !is_null($instance['url'])) {
-			$script = sprintf('jQuery.get("%s/wp-ajax-widget/ajax-request.php?request=%s", function(data){jQuery(".wp_ajax_widget").append(data);});', plugins_url(), $instance['url']).PHP_EOL;
+			$script = sprintf('jQuery.get("%s?request=%s", function(data){jQuery(".wp_ajax_widget_return").append(data).fadeIn();jQuery(".wp_ajax_widget_loading").fadeOut();});', plugins_url( 'ajax-request.php' , __FILE__ ), $instance['url']).PHP_EOL;
 			echo '<script type="text/javascript">'.PHP_EOL;
 			echo sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
 			echo '</script>'.PHP_EOL;
-
-			echo '<div class="wp_ajax_widget"></div>'.PHP_EOL;
+			echo sprintf('<div class="wp_ajax_widget"><img class="wp_ajax_widget_loading" src="%s"><span class="wp_ajax_widget_return"></span></div>', plugins_url( 'loading.gif' , __FILE__ )).PHP_EOL;
 		}
+		echo $after_widget;
 	}
 
 	# register/enqueue the required scripts
 	function register_scripts() {
 		wp_enqueue_script('jquery');
+		wp_enqueue_style('wp_ajax_widget', plugins_url( 'style.css' , __FILE__ ));
 	}
 }
 

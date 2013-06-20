@@ -1,0 +1,25 @@
+.wp_ajax_widget {
+	position: relative;
+	width: 100%;
+	min-height: 32px;
+}
+
+.wp_ajax_widget .wp_ajax_widget_return {
+	display: none;
+}
+
+.wp_ajax_widget .wp_ajax_widget_loading {
+	/* first reset style*/
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	box-shadow: none;
+	border-radius: 0;
+	/* position in the center */
+	position: absolute;
+	left: 50%;
+	margin-left: -16px;
+}
