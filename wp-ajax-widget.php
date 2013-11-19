@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WP AJAX Widget
+Plugin Name: WP Super Ajax
 Plugin URI: https://github.com/iGARET/wp-ajax-widget
 Description: Plugin for loading remote content into a widget.
-Version: 1.2.1
+Version: 1.3
 Author: iGARET
 Author URI: http://igaret.com
 License: GPL2
@@ -27,7 +27,7 @@ License: GPL2
 
 
 /**
- * The main plugin class
+ * The widget class
  * @author Garet McKinley <garetmckinley@me.com>
  */
 class wp_ajax_widget extends WP_Widget {
@@ -96,6 +96,65 @@ class wp_ajax_widget extends WP_Widget {
 # register the widget
 add_action('widgets_init', create_function('', 'return register_widget("wp_ajax_widget");'));
 add_action('init', array("wp_ajax_widget", "register_scripts"));
+
+# register the options
+function register_mysettings() {
+	//register our settings
+	get_option('wpsa_aa_position', 'below-content');
+	get_option('wpsa_aa_url', 'google.com');
+	register_setting( 'wpsa-settings', 'wpsa_aa_position' );
+	register_setting( 'wpsa-settings', 'wpsa_aa_url' );
+}
+
+if ( is_admin() ){ // admin actions
+  add_action( 'admin_init', 'register_mysettings' );
+}
+
+# register the submenu page
+function register_superajax_menu_page() {
+	$page = add_submenu_page( 'options-general.php', 'WP Super Ajax', 'WP Super Ajax', 'manage_options', 'wp_super_ajax', 'createWPSuperAjaxPage' ); 
+}
+
+function createWPSuperAjaxPage() {
+	require(sprintf("%s/%s", __DIR__, "settings.php"));
+}
+add_action('admin_menu', 'register_superajax_menu_page');
+
+
+function callback($buffer) {
+  // modify buffer here, and then return the updated code
+  return $buffer;
+}
+ 
+function buffer_start() { ob_start("callback"); }
+ 
+function buffer_end() { 
+	echo sprintf('<div style="text-align:center;margin-bottom:20px;">%s</div>', '©2013');
+}
+ 
+add_action('wp_head', 'buffer_start');
+add_action('wp_footer', 'buffer_end');
+
+
+/**
+ * Handle Shortcodes.
+ */
+function displayRemoteContent( $atts ){
+	extract( shortcode_atts( array(
+			'url' => 'something'
+		), $atts ) );
+
+	if (!empty($url)) {
+		$id = md5(time() . $url);
+		$script = sprintf('jQuery.get("%s?request=%s", function(data){jQuery(".wp_ajax_widget_return_%s").append(data).fadeIn();jQuery(".wp_ajax_widget_loading").fadeOut();});', plugins_url( 'ajax-request.php' , __FILE__ ), str_replace("http://", "", $url), $id).PHP_EOL;
+		$output = '<script type="text/javascript">'.PHP_EOL;
+		$output .= sprintf('jQuery(document).ready(function() {%s});', $script).PHP_EOL;
+		$output .= '</script>'.PHP_EOL;
+		$output .= sprintf('<div class="wp_ajax_widget"><img class="wp_ajax_widget_loading" src="%s"><span class="wp_ajax_widget_return_%s"></span></div>', plugins_url( 'loading.gif' , __FILE__ ), $id).PHP_EOL;
+	}	
+	return $output;
+}
+add_shortcode( 'ajax', 'displayRemoteContent' );
 
 
 /**
