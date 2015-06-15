@@ -16,5 +16,5 @@
 */
 
 
-echo file_get_contents("http://".$_GET['request']);
+echo file_get_contents(urldecode($_GET['request']));
 ?>
