@@ -129,7 +129,7 @@ class WP_GitHub_Updater {
 	 * @return bool overrule or not
 	 */
 	private function overrule_transients() {
-		return ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'WP_GITHUB_FORCE_UPDATE' ) || WP_GITHUB_FORCE_UPDATE );
+		return ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'WP_GITHUB_FORCE_UPDATE' ) && WP_GITHUB_FORCE_UPDATE );
 	}
 
 
